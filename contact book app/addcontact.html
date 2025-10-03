@@ -1,0 +1,66 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Test Page</title>
+    </head>
+    <body>
+    <form id="edit-form">
+        <label for="firstname">firstName:</label>
+        <input type="text" id="firstname" name="firstname"><br/>
+
+        <label for="lastname">lastname:</label>
+        <input type="text" id="lastname" name="lastname"><br/>
+
+        <label for="mobile">mobile:</label>
+        <input type="text" id="mobile" name="mobile"><br/>
+
+        <label for="email">email:</label>
+        <input type="text" id="email" name="email"><br/>
+
+        <label for="avatar">select an avatar:</label><br/>
+        <input type="file" name="avatar" id="avatar"><br/>
+
+        <button type="submit" id="submitform">submit</button>
+    </form>
+    <button id="homeLink" type="button">HOME</button>
+
+    <script src="config.js"></script>
+    <script>
+        document.getElementById('submitform').addEventListener('click', submitform);
+        document.getElementById('homeLink').addEventListener('click', homeLink);
+        // Removed incorrect third listener for undefined element ID 'add contact'
+
+        function submitform(e) {
+            e.preventDefault();
+            const form = new FormData(document.querySelector('#edit-form'));
+            form.append('apiKey', apiKey);
+
+            fetch(rootPath + 'controller/insert-contact/', {
+                method: 'POST',
+                headers: { 'accept': 'application/json,*/*' },
+                body: form
+            })
+            .then(function (response) {
+                return response.text();
+            })
+            .then(function (data) {
+                if (data === '1') {
+                    alert("contact added.");
+                } else {
+                    alert(data);
+                }
+                homeLink();
+            });
+        }
+
+        function homeLink() {
+            window.open(rootPath + 'index.html', '_self');
+        }
+    </script>
+    </body>
+</html>
+
+
+              
+        
+
